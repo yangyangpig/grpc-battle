@@ -2,9 +2,8 @@ package bootstrap
 
 import (
 	"fmt"
-	"log"
 	"github.com/spf13/cobra"
-	"grpc-battle/pkg/config"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -17,7 +16,6 @@ type Bootstrap struct {
 	name          string
 	rootCmd       *cobra.Command
 	serverOptions serverOptions
-	conf          *config.BaseConfig
 	mixtureServer MixtureServer
 }
 
@@ -27,17 +25,6 @@ func WithBootstrapName(name string) BootstrapOpt {
 	}
 }
 
-func WithBootstrapRootCmd(rc *cobra.Command) BootstrapOpt {
-	return func(b *Bootstrap) {
-		b.rootCmd = rc
-	}
-}
-
-func WithBootstrapConf(c *config.BaseConfig) BootstrapOpt {
-	return func(b *Bootstrap) {
-		b.conf = c
-	}
-}
 
 func WithBootstrapMixtureServer(s MixtureServer) BootstrapOpt {
 	return func(b *Bootstrap) {

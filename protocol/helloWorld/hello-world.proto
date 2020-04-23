@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package grpc_battle.helloworld;
+package helloworld;
 
 service HelloWorld {
     rpc SayHello(SayHelloRequest) returns (SayHelloResponse);
