@@ -1,0 +1,7 @@
+host: 127.0.0.1
+port: 80
+protocol: tcp
+pingInterval: 42
+poolSize: 14
+password: 123213256789
+database: 431
