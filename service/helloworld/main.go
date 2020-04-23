@@ -24,11 +24,11 @@ func main()  {
 			h := server.NewHelloWorld()
 			pb.RegisterHelloWorldServer(s, h)
 		}),
+		bootstrap.WithGrpcServerBaseConf(svrCfg),
 		)
 
 	bootstrap.New(
 		bootstrap.WithBootstrapName(serverName),
-		bootstrap.WithBootstrapConf(svrCfg),
 		bootstrap.WithBootstrapMixtureServer(helloWorld),
 		).Start()
 }
