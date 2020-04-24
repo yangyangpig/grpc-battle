@@ -59,7 +59,7 @@ func NewGrpcServer(opts ...GrpcServerOpt) *GrpcServer {
 	for _, opt := range opts {
 		opt(g)
 	}
-
+	log.Printf("grpc server init success (%+v)", g)
 
 	return g
 
@@ -79,6 +79,8 @@ func (g *GrpcServer) InitServer() error {
 	hsvr.SetServingStatus("", healthpb.HealthCheckResponse_SERVING)
 	healthpb.RegisterHealthServer(g.grpcServer, hsvr)
 
+	log.Printf("grpc address (%s)", g.grpcAddr)
+	log.Printf("grpc loglevel (%s)", g.logLevel)
 	var err error
 	g.GRPCListener, err = net.Listen("tcp", g.grpcAddr)
 	if err != nil {
@@ -101,7 +103,7 @@ func (g *GrpcServer) CloseServer() {
 	g.grpcServer.GracefulStop()
 }
 
-func (g *GrpcServer) WaiteAllWorld() {
+func (g *GrpcServer) WaitAllWorld() {
 	g.wg.Wait()
 }
 

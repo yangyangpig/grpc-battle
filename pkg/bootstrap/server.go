@@ -5,6 +5,6 @@ type MixtureServer interface {
 	StartServer() // 启动
 	CloseServer() // 关闭
 	CleanAllServer(s chan struct{}) // close by syscall signal
-	WaiteAllWorld()
+	WaitAllWorld()
 }
 

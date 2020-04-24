@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"grpc-battle/pkg/config"
 	"log"
 	"os"
 	"os/signal"
@@ -15,7 +16,6 @@ type BootstrapOpt func(b *Bootstrap)
 type Bootstrap struct {
 	name          string
 	rootCmd       *cobra.Command
-	serverOptions serverOptions
 	mixtureServer MixtureServer
 }
 
@@ -53,14 +53,7 @@ func (b *Bootstrap) init() {
 		Short: fmt.Sprintf("start the server name %s", b.name),
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			//b.conf.Load(map[string]string {
-			//	b.name: ".",
-			//	b.name: "$HOME/." + b.name,
-			//	b.name: "/etc",
-			//	b.name: "$HOME/etc",
-			//})
 
-			// 服务的启动
 			if err := b.mixtureServer.InitServer(); err != nil {
 				log.Println(err)
 				return err
@@ -71,8 +64,8 @@ func (b *Bootstrap) init() {
 
 			gracefulClose := make(chan struct{})
 			go func() {
-				// waite the world
-				b.mixtureServer.WaiteAllWorld()
+				// wait the world
+				b.mixtureServer.WaitAllWorld()
 				close(gracefulClose)
 			}()
 
@@ -93,9 +86,21 @@ func (b *Bootstrap) init() {
 		},
 	}
 
-	startCmd.PersistentFlags().StringVar(&b.serverOptions.grpcAddr, "listen", ":8080", "grpc address")
-	startCmd.PersistentFlags().StringVar(&b.serverOptions.httpAddr, "admin", ":80", "admin address")
-	startCmd.PersistentFlags().StringVar(&b.serverOptions.logLevel, "loglev", "info", "log level")
+	// require the server config
+	var baseConfig *config.BaseConfig
+	if grpc, ok := b.mixtureServer.(*GrpcServer); ok {
+		baseConfig = grpc.conf
+	}
+
+
+
+	listen := baseConfig.GetString("listen")
+	httpAddr := baseConfig.GetString("admin")
+	logLevel := baseConfig.GetString("loglev")
+
+	startCmd.PersistentFlags().StringVar(&listen, "listen", ":8080", "grpc address")
+	startCmd.PersistentFlags().StringVar(&httpAddr, "admin", ":80", "admin address")
+	startCmd.PersistentFlags().StringVar(&logLevel, "loglev", "info", "log level")
 	b.rootCmd.AddCommand(startCmd)
 }
 

@@ -19,7 +19,7 @@ func main()  {
 		})
 
 	// grpc服务注册
-	helloWorld := bootstrap.NewGrpcServer(
+	helloWorld := bootstrap.NewGrpcServer (
 		bootstrap.WithGrpcServerRegister(func(s *grpc.Server) {
 			h := server.NewHelloWorld()
 			pb.RegisterHelloWorldServer(s, h)

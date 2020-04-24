@@ -45,6 +45,11 @@ func (b *BaseConfig) Load(confPath map[string]string) {
 		b.v.SetConfigName(fileName)
 		b.v.AddConfigPath(filePath)
 	}
+	if err := b.v.ReadInConfig(); err != nil {
+		log.Fatalf("Load ReadInConfig faile (%+v)", err)
+		return
+	}
+	return
 }
 
 func (b *BaseConfig) StartMonitor() {
@@ -97,11 +102,9 @@ func (b *BaseConfig) StartMonitor() {
 
 // s 是指指定的不同配置文件实例结构体
 func (b *BaseConfig) InitConfig(s interface{}) (interface{}, error) {
-	if err := b.v.ReadInConfig(); err == nil {
-		if err := b.v.Unmarshal(s); err != nil {
-			log.Fatalf("config unmarshal faile (%+v)", err)
-			return nil, err
-		}
+	if err := b.v.Unmarshal(s); err != nil {
+		log.Fatalf("config unmarshal faile (%+v)", err)
+		return nil, err
 	}
 	return s, nil
 }
