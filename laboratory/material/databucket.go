@@ -1,9 +1,4 @@
-package laboratory
-
-// 等待put协程通知，说池子有数据了，才开始读，不然会一直在那等着,这个动作可以实现无论上面有多少个goroutine在读，但是都是顺序读出来的
-// 因为有数据才读出来，达到不会因为多个goroutine读取造成独处数据乱序问题
-
-// 实现了，多个goroutine生产数据，多个goutine消费数据，但是，读出来的数据都还是有序的
+package material
 
 import (
 	"bytes"
@@ -11,6 +6,11 @@ import (
 	"io"
 	"sync"
 )
+
+// 等待put协程通知，说池子有数据了，才开始读，不然会一直在那等着,这个动作可以实现无论上面有多少个goroutine在读，但是都是顺序读出来的
+// 因为有数据才读出来，达到不会因为多个goroutine读取造成独处数据乱序问题
+
+// 实现了，多个goroutine生产数据，多个goutine消费数据，但是，读出来的数据都还是有序的,主要是因为，多个读goroutine在等写routine通知才读出来
 
 type MyDataBucket struct {
 	br *bytes.Buffer
@@ -61,7 +61,7 @@ func (b *MyDataBucket) Put(d []byte) (int, error) {
 	b.gmutex.Lock()
 	defer  b.gmutex.Unlock()
 	n, err := b.br.Write(d)
-	b.rcond.Signal()
+	b.rcond.Broadcast()
 	return n, err
 }
 

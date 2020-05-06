@@ -100,24 +100,160 @@ func (m *SayHelloResponse) GetPong() string {
 	return ""
 }
 
+type StreamPoint struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Value                int32    `protobuf:"varint,2,opt,name=value,proto3" json:"value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *StreamPoint) Reset()         { *m = StreamPoint{} }
+func (m *StreamPoint) String() string { return proto.CompactTextString(m) }
+func (*StreamPoint) ProtoMessage()    {}
+func (*StreamPoint) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5a62523e9758a7c9, []int{2}
+}
+
+func (m *StreamPoint) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_StreamPoint.Unmarshal(m, b)
+}
+func (m *StreamPoint) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_StreamPoint.Marshal(b, m, deterministic)
+}
+func (m *StreamPoint) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_StreamPoint.Merge(m, src)
+}
+func (m *StreamPoint) XXX_Size() int {
+	return xxx_messageInfo_StreamPoint.Size(m)
+}
+func (m *StreamPoint) XXX_DiscardUnknown() {
+	xxx_messageInfo_StreamPoint.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_StreamPoint proto.InternalMessageInfo
+
+func (m *StreamPoint) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *StreamPoint) GetValue() int32 {
+	if m != nil {
+		return m.Value
+	}
+	return 0
+}
+
+type StreamRequest struct {
+	Pt                   *StreamPoint `protobuf:"bytes,1,opt,name=pt,proto3" json:"pt,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
+}
+
+func (m *StreamRequest) Reset()         { *m = StreamRequest{} }
+func (m *StreamRequest) String() string { return proto.CompactTextString(m) }
+func (*StreamRequest) ProtoMessage()    {}
+func (*StreamRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5a62523e9758a7c9, []int{3}
+}
+
+func (m *StreamRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_StreamRequest.Unmarshal(m, b)
+}
+func (m *StreamRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_StreamRequest.Marshal(b, m, deterministic)
+}
+func (m *StreamRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_StreamRequest.Merge(m, src)
+}
+func (m *StreamRequest) XXX_Size() int {
+	return xxx_messageInfo_StreamRequest.Size(m)
+}
+func (m *StreamRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_StreamRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_StreamRequest proto.InternalMessageInfo
+
+func (m *StreamRequest) GetPt() *StreamPoint {
+	if m != nil {
+		return m.Pt
+	}
+	return nil
+}
+
+type StreamResponse struct {
+	Pt                   *StreamPoint `protobuf:"bytes,1,opt,name=pt,proto3" json:"pt,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
+}
+
+func (m *StreamResponse) Reset()         { *m = StreamResponse{} }
+func (m *StreamResponse) String() string { return proto.CompactTextString(m) }
+func (*StreamResponse) ProtoMessage()    {}
+func (*StreamResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5a62523e9758a7c9, []int{4}
+}
+
+func (m *StreamResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_StreamResponse.Unmarshal(m, b)
+}
+func (m *StreamResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_StreamResponse.Marshal(b, m, deterministic)
+}
+func (m *StreamResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_StreamResponse.Merge(m, src)
+}
+func (m *StreamResponse) XXX_Size() int {
+	return xxx_messageInfo_StreamResponse.Size(m)
+}
+func (m *StreamResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_StreamResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_StreamResponse proto.InternalMessageInfo
+
+func (m *StreamResponse) GetPt() *StreamPoint {
+	if m != nil {
+		return m.Pt
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*SayHelloRequest)(nil), "helloworld.SayHelloRequest")
 	proto.RegisterType((*SayHelloResponse)(nil), "helloworld.SayHelloResponse")
+	proto.RegisterType((*StreamPoint)(nil), "helloworld.StreamPoint")
+	proto.RegisterType((*StreamRequest)(nil), "helloworld.StreamRequest")
+	proto.RegisterType((*StreamResponse)(nil), "helloworld.StreamResponse")
 }
 
 func init() { proto.RegisterFile("hello-world.proto", fileDescriptor_5a62523e9758a7c9) }
 
 var fileDescriptor_5a62523e9758a7c9 = []byte{
-	// 138 bytes of a gzipped FileDescriptorProto
+	// 267 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0xcc, 0x48, 0xcd, 0xc9,
 	0xc9, 0xd7, 0x2d, 0xcf, 0x2f, 0xca, 0x49, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x02,
 	0x0b, 0x81, 0x45, 0x94, 0x54, 0xb9, 0xf8, 0x83, 0x13, 0x2b, 0x3d, 0x40, 0x02, 0x41, 0xa9, 0x85,
 	0xa5, 0xa9, 0xc5, 0x25, 0x42, 0x42, 0x5c, 0x2c, 0x05, 0x99, 0x79, 0xe9, 0x12, 0x8c, 0x0a, 0x8c,
 	0x1a, 0x9c, 0x41, 0x60, 0xb6, 0x92, 0x1a, 0x97, 0x00, 0x42, 0x59, 0x71, 0x41, 0x7e, 0x5e, 0x71,
-	0x2a, 0x58, 0x5d, 0x3e, 0x92, 0xba, 0xfc, 0xbc, 0x74, 0xa3, 0x60, 0x2e, 0x2e, 0xb0, 0xa2, 0x70,
-	0x90, 0xe1, 0x42, 0xae, 0x5c, 0x1c, 0x30, 0x5d, 0x42, 0xd2, 0x7a, 0x08, 0x5b, 0xf5, 0xd0, 0xac,
-	0x94, 0x92, 0xc1, 0x2e, 0x09, 0xb1, 0x28, 0x89, 0x0d, 0xec, 0x6c, 0x63, 0x40, 0x00, 0x00, 0x00,
-	0xff, 0xff, 0xd4, 0xbb, 0xd7, 0xf9, 0xcb, 0x00, 0x00, 0x00,
+	0x2a, 0x58, 0x5d, 0x3e, 0x92, 0xba, 0xfc, 0xbc, 0x74, 0x25, 0x73, 0x2e, 0xee, 0xe0, 0x92, 0xa2,
+	0xd4, 0xc4, 0xdc, 0x80, 0xfc, 0xcc, 0x3c, 0xb0, 0x51, 0x79, 0x89, 0xb9, 0xa9, 0x30, 0x25, 0x20,
+	0xb6, 0x90, 0x08, 0x17, 0x6b, 0x59, 0x62, 0x4e, 0x69, 0xaa, 0x04, 0x93, 0x02, 0xa3, 0x06, 0x6b,
+	0x10, 0x84, 0xa3, 0x64, 0xc1, 0xc5, 0x0b, 0xd1, 0x08, 0x73, 0x85, 0x3a, 0x17, 0x53, 0x41, 0x09,
+	0x58, 0x23, 0xb7, 0x91, 0xb8, 0x1e, 0xc2, 0xc5, 0x7a, 0x48, 0xe6, 0x07, 0x31, 0x15, 0x94, 0x28,
+	0x59, 0x72, 0xf1, 0xc1, 0x74, 0x42, 0x1d, 0x46, 0xac, 0x56, 0xa3, 0xd9, 0x4c, 0x5c, 0x5c, 0x60,
+	0x3f, 0x85, 0x83, 0xa4, 0x85, 0x5c, 0xb9, 0x38, 0x60, 0x9e, 0x14, 0x92, 0x46, 0xd1, 0x87, 0x1a,
+	0x42, 0x52, 0x32, 0xd8, 0x25, 0xa1, 0xd6, 0xdb, 0x73, 0xb1, 0xf8, 0x64, 0x16, 0x97, 0x08, 0x49,
+	0x62, 0x5a, 0x0d, 0x33, 0x40, 0x0a, 0x9b, 0x14, 0x44, 0xbb, 0x01, 0xa3, 0x90, 0x23, 0x17, 0x5b,
+	0x50, 0x6a, 0x72, 0x7e, 0x51, 0x0a, 0x99, 0x46, 0x68, 0x30, 0x0a, 0x39, 0x71, 0xb1, 0x06, 0xe5,
+	0x97, 0x96, 0xa4, 0x92, 0x6d, 0x82, 0x01, 0x63, 0x12, 0x1b, 0x38, 0xb5, 0x18, 0x03, 0x02, 0x00,
+	0x00, 0xff, 0xff, 0xf8, 0x22, 0xdf, 0x3e, 0x42, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -133,6 +269,9 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type HelloWorldClient interface {
 	SayHello(ctx context.Context, in *SayHelloRequest, opts ...grpc.CallOption) (*SayHelloResponse, error)
+	List(ctx context.Context, in *StreamRequest, opts ...grpc.CallOption) (HelloWorld_ListClient, error)
+	Record(ctx context.Context, opts ...grpc.CallOption) (HelloWorld_RecordClient, error)
+	Route(ctx context.Context, opts ...grpc.CallOption) (HelloWorld_RouteClient, error)
 }
 
 type helloWorldClient struct {
@@ -152,9 +291,109 @@ func (c *helloWorldClient) SayHello(ctx context.Context, in *SayHelloRequest, op
 	return out, nil
 }
 
+func (c *helloWorldClient) List(ctx context.Context, in *StreamRequest, opts ...grpc.CallOption) (HelloWorld_ListClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_HelloWorld_serviceDesc.Streams[0], "/helloworld.HelloWorld/List", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &helloWorldListClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type HelloWorld_ListClient interface {
+	Recv() (*StreamResponse, error)
+	grpc.ClientStream
+}
+
+type helloWorldListClient struct {
+	grpc.ClientStream
+}
+
+func (x *helloWorldListClient) Recv() (*StreamResponse, error) {
+	m := new(StreamResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *helloWorldClient) Record(ctx context.Context, opts ...grpc.CallOption) (HelloWorld_RecordClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_HelloWorld_serviceDesc.Streams[1], "/helloworld.HelloWorld/Record", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &helloWorldRecordClient{stream}
+	return x, nil
+}
+
+type HelloWorld_RecordClient interface {
+	Send(*StreamRequest) error
+	CloseAndRecv() (*StreamResponse, error)
+	grpc.ClientStream
+}
+
+type helloWorldRecordClient struct {
+	grpc.ClientStream
+}
+
+func (x *helloWorldRecordClient) Send(m *StreamRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *helloWorldRecordClient) CloseAndRecv() (*StreamResponse, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(StreamResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *helloWorldClient) Route(ctx context.Context, opts ...grpc.CallOption) (HelloWorld_RouteClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_HelloWorld_serviceDesc.Streams[2], "/helloworld.HelloWorld/Route", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &helloWorldRouteClient{stream}
+	return x, nil
+}
+
+type HelloWorld_RouteClient interface {
+	Send(*StreamRequest) error
+	Recv() (*StreamResponse, error)
+	grpc.ClientStream
+}
+
+type helloWorldRouteClient struct {
+	grpc.ClientStream
+}
+
+func (x *helloWorldRouteClient) Send(m *StreamRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *helloWorldRouteClient) Recv() (*StreamResponse, error) {
+	m := new(StreamResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // HelloWorldServer is the server API for HelloWorld service.
 type HelloWorldServer interface {
 	SayHello(context.Context, *SayHelloRequest) (*SayHelloResponse, error)
+	List(*StreamRequest, HelloWorld_ListServer) error
+	Record(HelloWorld_RecordServer) error
+	Route(HelloWorld_RouteServer) error
 }
 
 func RegisterHelloWorldServer(s *grpc.Server, srv HelloWorldServer) {
@@ -179,6 +418,79 @@ func _HelloWorld_SayHello_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _HelloWorld_List_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(StreamRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(HelloWorldServer).List(m, &helloWorldListServer{stream})
+}
+
+type HelloWorld_ListServer interface {
+	Send(*StreamResponse) error
+	grpc.ServerStream
+}
+
+type helloWorldListServer struct {
+	grpc.ServerStream
+}
+
+func (x *helloWorldListServer) Send(m *StreamResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _HelloWorld_Record_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(HelloWorldServer).Record(&helloWorldRecordServer{stream})
+}
+
+type HelloWorld_RecordServer interface {
+	SendAndClose(*StreamResponse) error
+	Recv() (*StreamRequest, error)
+	grpc.ServerStream
+}
+
+type helloWorldRecordServer struct {
+	grpc.ServerStream
+}
+
+func (x *helloWorldRecordServer) SendAndClose(m *StreamResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *helloWorldRecordServer) Recv() (*StreamRequest, error) {
+	m := new(StreamRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func _HelloWorld_Route_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(HelloWorldServer).Route(&helloWorldRouteServer{stream})
+}
+
+type HelloWorld_RouteServer interface {
+	Send(*StreamResponse) error
+	Recv() (*StreamRequest, error)
+	grpc.ServerStream
+}
+
+type helloWorldRouteServer struct {
+	grpc.ServerStream
+}
+
+func (x *helloWorldRouteServer) Send(m *StreamResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *helloWorldRouteServer) Recv() (*StreamRequest, error) {
+	m := new(StreamRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 var _HelloWorld_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "helloworld.HelloWorld",
 	HandlerType: (*HelloWorldServer)(nil),
@@ -188,6 +500,23 @@ var _HelloWorld_serviceDesc = grpc.ServiceDesc{
 			Handler:    _HelloWorld_SayHello_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "List",
+			Handler:       _HelloWorld_List_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "Record",
+			Handler:       _HelloWorld_Record_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "Route",
+			Handler:       _HelloWorld_Route_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+	},
 	Metadata: "hello-world.proto",
 }
