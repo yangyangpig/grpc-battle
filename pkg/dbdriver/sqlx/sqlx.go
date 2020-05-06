@@ -2,26 +2,26 @@ package sqlx
 
 import "grpc-battle/pkg/dbdriver"
 
-type Sqlx struct {
+type sql struct {
 	op *dbdriver.Opener
 }
 
-func NewSqlx() *Sqlx {
-	return &Sqlx{op:dbdriver.NewOpener("mysql")}
+func NewSqlx() *sql {
+	return &sql{op:dbdriver.NewOpener("mysql")}
 }
 
-func (x Sqlx) query()  {
-
-}
-
-func (x Sqlx) Insert() {
+func (x *sql) query(sql string)  {
 
 }
 
-func (x Sqlx) Update() {
+func (x *sql) Insert() {
 
 }
 
-func (x Sqlx) Delete() {
+func (x *sql) Update() {
+
+}
+
+func (x *sql) Delete() {
 
 }

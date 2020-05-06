@@ -8,6 +8,13 @@ import (
 	"grpc-battle/pkg/config"
 )
 
+type DRIVERTYPE int
+
+const (
+	MYSQL DRIVERTYPE = iota
+	// TODO and so on
+)
+
 type Opener struct {
 	conf   *config.BaseConfig
 	name   string
@@ -34,18 +41,17 @@ func (o *Opener) binder() string {
 		o.conf.GetString("Port"), o.conf.GetString("Database"), o.conf.GetString("Charset"))
 }
 
-func (o *Opener) OpenDb() (*sqlx.DB, error) {
+func (o *Opener) OpenDb(driverType DRIVERTYPE) (*sqlx.DB, error) {
 
-	db, err := sqlx.Open(o.name, o.source)
-	if err != nil {
-		log.Error(err)
-		return nil, err
+	switch driverType {
+	case MYSQL:
+		db, err := sqlx.Open(o.name, o.source)
+		if err != nil {
+			log.Error(err)
+			return nil, err
+		}
+		return db, nil
 	}
-	return db, nil
 }
 
 // TODO handle the query list
-
-
-
-
