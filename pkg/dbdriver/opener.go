@@ -1,11 +1,12 @@
 package dbdriver
 
 import (
+	"errors"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	"github.com/opentracing/opentracing-go/log"
 	"grpc-battle/pkg/config"
+	"log"
 )
 
 type DRIVERTYPE int
@@ -15,13 +16,18 @@ const (
 	// TODO and so on
 )
 
+var (
+	ERR_DRIVER = errors.New("driver type error")
+)
+
 type Opener struct {
-	conf   *config.BaseConfig
-	name   string
-	source string
+	Conf   *config.BaseConfig
+	Name   string
+	Source string
+	Driver interface{}
 }
 
-func NewOpener(serverName string) *Opener {
+func NewOpener(serverName string, driverType DRIVERTYPE) (*Opener, error) {
 	svrCfg := config.NewBaseConfig(config.WithBaseConfigIsMonitor(false))
 	svrCfg.Load(map[string]string{
 		serverName: ".",
@@ -29,29 +35,31 @@ func NewOpener(serverName string) *Opener {
 		serverName: "/etc",
 		serverName: "$HOME/etc",
 	})
-	cs := fmt.Sprintf("%s:%s@%s(%s:%d)/%s?charset=%s&parseTime=true&loc=Local",
+	cs := fmt.Sprintf("%s:%s@%s(%s:%s)/%s?charset=%s&parseTime=true&loc=Local",
 		svrCfg.GetString("userName"), svrCfg.GetString("Password"), svrCfg.GetString("Protocol"), svrCfg.GetString("Host"),
 		svrCfg.GetString("Port"), svrCfg.GetString("Database"), svrCfg.GetString("Charset"))
-	return &Opener{conf: svrCfg, name: serverName, source: cs}
-}
 
-func (o *Opener) binder() string {
-	return fmt.Sprintf("%s:%s@%s(%s:%d)/%s?charset=%s&parseTime=true&loc=Local",
-		o.conf.GetString("userName"), o.conf.GetString("Password"), o.conf.GetString("Protocol"), o.conf.GetString("Host"),
-		o.conf.GetString("Port"), o.conf.GetString("Database"), o.conf.GetString("Charset"))
-}
-
-func (o *Opener) OpenDb(driverType DRIVERTYPE) (*sqlx.DB, error) {
-
+	var db interface{}
+	var err error
 	switch driverType {
 	case MYSQL:
-		db, err := sqlx.Open(o.name, o.source)
+		db, err = sqlx.Open(serverName, cs)
 		if err != nil {
-			log.Error(err)
+			log.Fatalf("open %d fail : %+v", serverName, err)
 			return nil, err
 		}
-		return db, nil
-	}
-}
+		// make sure the db is available
+		if sqx, ok := db.(*sqlx.DB); ok {
+			err = sqx.Ping()
+			if err != nil {
+				log.Fatalf("ping %d db fail : %+v", serverName, err)
+				return nil, err
+			}
+		} else {
+			return nil, ERR_DRIVER
+		}
 
-// TODO handle the query list
+	}
+
+	return &Opener{Conf: svrCfg, Name: serverName, Source: cs, Driver: db}, nil
+}
