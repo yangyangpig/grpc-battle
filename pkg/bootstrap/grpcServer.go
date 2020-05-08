@@ -102,7 +102,7 @@ func (g *GrpcServer) StartServer() {
 func (g *GrpcServer) CloseServer() {
 	g.grpcServer.GracefulStop()
 }
-
+// 这个wait是阻塞等待当前的协程
 func (g *GrpcServer) WaitAllWorld() {
 	g.wg.Wait()
 }
