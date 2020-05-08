@@ -18,10 +18,21 @@ func init() {
 	sqlDriver, _ = NewSqlx()
 }
 func TestSql_QueryRows(t *testing.T) {
+	// 如果不设置最大打开连接数,不限制，就不断创建新连接
+	// sqlDriver.op.SetMaxOpenConns(1)
 	query := fmt.Sprintf("select %s from user_friendships where from_uid in (?)", userRemark)
 	scan, err := sqlDriver.QueryRows(query, 500001, 500001)
 	if err != nil {
 		t.Errorf("queryrows fail %v", err)
+		return
+	}
+
+	// 模拟阻塞的情况，由于设置了最大的打开连接数为1，而上面的query没有关闭conn，所以下面就会一直阻塞,如果不设置最大打开连接数,不限制，就不断创建新连接
+	query2 := fmt.Sprintf("select %s from user_friendships where from_uid in (?)", userRemark)
+	_, err = sqlDriver.QueryRows(query2, 500001, 500001)
+
+	if err != nil {
+		t.Errorf("queryrows2 fail %v", err)
 		return
 	}
 
@@ -37,7 +48,7 @@ func TestSql_QueryRows(t *testing.T) {
 
 func TestMysql_Insert(t *testing.T) {
 	query := fmt.Sprintf("insert into user_friendships (%s) values (?,?)", insertRemark)
-	scan, err := sqlDriver.Exec(query, 1111111, "2020-01-11 19:42:22")
+	scan, err := sqlDriver.ExecSql(query, 1111111, "2020-01-11 19:42:22")
 	if err != nil {
 		t.Errorf("insert fail %v", err)
 		return
@@ -87,4 +98,18 @@ func TestMysql_Transaction(t *testing.T) {
 		return
 	}
 
+}
+
+func TestNewSqlx(t *testing.T) {
+	freeConn := []uint32{1,3,2,4}
+	closing := make([]uint32,0)
+	for i := 0; i < len(freeConn); i++ {
+		c := freeConn[i]
+		closing = append(closing, c)
+		last := len(freeConn) - 1
+		freeConn[i] = freeConn[last]
+		freeConn[last] = 0
+		freeConn = freeConn[:last]
+		i--
+	}
 }

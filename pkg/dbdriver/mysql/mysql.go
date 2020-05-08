@@ -14,6 +14,7 @@ var (
 	ERR_NOTMYSQL = errors.New("is not mysqlx driver please check again")
 )
 
+
 type mysql struct {
 	op *sqlx.DB
 }
@@ -58,7 +59,7 @@ func (x *mysql) QueryRows(query string, param ...interface{}) (*Scanner, error) 
 	return &Scanner{rowx: rows}, nil
 }
 
-func (x *mysql) Exec(query string, param ...interface{}) (*Scanner, error) {
+func (x *mysql) ExecSql(query string, param ...interface{}) (*Scanner, error) {
 
 	result, err := x.op.ExecContext(context.Background(), query, param...)
 
@@ -84,7 +85,6 @@ func (x *mysql) Transaction(handle func(interface{}) error) error {
 	return err
 }
 
-
 type Scanner struct {
 	rowx interface{}
 }
@@ -98,6 +98,7 @@ func (s *Scanner) scanner() (res interface{}, err error) {
 				fmt.Printf("scan value %+v \n", m)
 			}
 		}
+		// 不关闭连接，会造成连接池膨胀
 		defer r.Close()
 		res = m
 		return
@@ -111,4 +112,21 @@ func (s *Scanner) scanner() (res interface{}, err error) {
 		return rowsAffected, nil
 	}
 	return
+}
+
+// TODO 批处理
+func (x *mysql) BatchExec(query string, param ...interface{}) (*Scanner, error) {
+	stmt, err := x.op.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	scan, err := stmt.ExecContext(context.Background(), param)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &Scanner{rowx:scan}, nil
+
 }

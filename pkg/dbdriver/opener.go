@@ -48,8 +48,9 @@ func NewOpener(serverName string, driverType DRIVERTYPE) (*Opener, error) {
 			log.Fatalf("open %d fail : %+v", serverName, err)
 			return nil, err
 		}
-		// make sure the db is available
+		// make sure the db is available and put conn into the pool
 		if sqx, ok := db.(*sqlx.DB); ok {
+			// you can establishing more than one conn and put them into pool
 			err = sqx.Ping()
 			if err != nil {
 				log.Fatalf("ping %d db fail : %+v", serverName, err)
