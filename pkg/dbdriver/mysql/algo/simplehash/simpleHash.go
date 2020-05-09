@@ -2,6 +2,7 @@ package simplehash
 
 import "strconv"
 
+// TODO maybe need to flexible
 const total = 10
 
 type SimpleHash struct {
